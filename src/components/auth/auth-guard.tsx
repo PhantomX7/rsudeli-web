@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAdminAuth } from "@/hooks/admin/use-auth";
 import { useAdminAuthStore } from "@/stores/admin-auth-store";
-import { logoutAction } from "@/actions/admin/auth"; // <--- Import Server Action
+import { logoutAction } from "@/actions/admin/auth";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 

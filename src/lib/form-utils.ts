@@ -13,12 +13,12 @@ export function getChangedValues<T extends Record<string, any>>(
     return currentValues;
   }
 
-  let changedValues: Partial<T> = {};
+  const changedValues: Partial<T> = {};
 
-  for (let key in currentValues) {
+  for (const key in currentValues) {
     if (currentValues.hasOwnProperty(key)) {
-      let currentValue = currentValues[key];
-      let initialValue = initialValues[key];
+      const currentValue = currentValues[key];
+      const initialValue = initialValues[key];
 
       // Check if the value has changed
       if (currentValue !== initialValue && currentValue !== null) {

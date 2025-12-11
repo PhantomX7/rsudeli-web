@@ -149,7 +149,7 @@ export function FilterableDataTable<TData>({
     React.useEffect(() => {
         // Filter out empty values
         const activeFilters = Object.entries(debouncedFilters).filter(
-            ([_, val]) => val !== "" && val !== null && val !== undefined
+            ([, val]) => val !== "" && val !== null && val !== undefined
         );
 
         if (

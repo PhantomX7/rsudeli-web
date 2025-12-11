@@ -27,7 +27,7 @@ export function extractPaginationParams(request: NextRequest): PaginationParams 
     if (key === 'limit' || key === 'page') {
       params[key] = value;
     } else if (params[key]) {
-      params[key] = [...(Array.isArray(params[key]) ? params[key] : [params[key]]), value] as string[];
+      params[key] = [...(Array.isArray(params[key]) ? (params[key] as string[]) : [params[key] as string]), value] as string[];
     } else {
       params[key] = value;
     }

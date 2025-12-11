@@ -63,6 +63,13 @@ export const ADMIN_API_ENDPOINTS = {
 } as const;
 
 export const PUBLIC_API_ENDPOINTS = {
+    AUTH: {
+        LOGIN: "/auth/login",
+        REFRESH: "/auth/refresh",
+        ME: "/auth/me",
+        CHANGE_PASSWORD: "/auth/change-password",
+        LOGOUT: "/auth/logout",
+    },
     BANNER: {
         GENERAL: "/public/banner",
     },

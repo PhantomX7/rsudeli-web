@@ -38,7 +38,7 @@ export default function BreadcrumbComponent() {
             const isLast = index === pathSegments.length - 1;
 
             // Format the segment name (capitalize first letter, handle special cases)
-            let label = segment
+            const label = segment
                 .replace(/-/g, " ")
                 .replace(/\b\w/g, (l) => l.toUpperCase());
 
@@ -64,7 +64,7 @@ export default function BreadcrumbComponent() {
     return (
         <Breadcrumb>
             <BreadcrumbList>
-                {breadcrumbs.map((item, index) => (
+                {breadcrumbs.map((item) => (
                     <div key={item.href} className="flex items-center">
                         <BreadcrumbItem className="">
                             {item.isLast ? (

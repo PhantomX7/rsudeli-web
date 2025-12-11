@@ -36,25 +36,6 @@ export function UserForm({ initialData, userId }: UserFormProps) {
     const { isPending, error } = updateMutation;
     const fieldErrors = error?.error?.fields;
 
-    // Don't show form if user is admin
-    if (["admin", "root"].includes(initialData ? initialData.role : "")) {
-        return (
-            <Card>
-                <CardHeader>
-                    <CardTitle>Role Management</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <Alert>
-                        <Info className="h-4 w-4" />
-                        <AlertDescription>
-                            Admin users cannot have their role modified.
-                        </AlertDescription>
-                    </Alert>
-                </CardContent>
-            </Card>
-        );
-    }
-
     const form = useForm({
         defaultValues: {
             role: initialData?.role as UserRole,
@@ -79,6 +60,25 @@ export function UserForm({ initialData, userId }: UserFormProps) {
             );
         },
     });
+
+    // Don't show form if user is admin
+    if (["admin", "root"].includes(initialData ? initialData.role : "")) {
+        return (
+            <Card>
+                <CardHeader>
+                    <CardTitle>Role Management</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <Alert>
+                        <Info className="h-4 w-4" />
+                        <AlertDescription>
+                            Admin users cannot have their role modified.
+                        </AlertDescription>
+                    </Alert>
+                </CardContent>
+            </Card>
+        );
+    }
 
     return (
         <Card>
