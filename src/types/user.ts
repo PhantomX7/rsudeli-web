@@ -1,4 +1,4 @@
-export type UserRole = "admin" | "user" | "reseller" | "root"; // Adjust based on your actual roles
+export type UserRole = "admin" | "root"; // Adjust based on your actual roles
 
 export type User = {
     id: number;
