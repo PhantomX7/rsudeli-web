@@ -1,7 +1,6 @@
 "use client";
 
 import { ChevronsUpDown, LogOut, Cog } from "lucide-react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
     DropdownMenu,
@@ -23,13 +22,18 @@ import { useAdminLogout } from "@/hooks/admin/use-auth";
 import Link from "next/link";
 
 export function NavUser() {
-    const user = useAdminAuthStore((state) => state.user); // Selective subscription!
+    const user = useAdminAuthStore((state) => state.user);
     const logoutMutation = useAdminLogout();
-
     const { isMobile } = useSidebar();
+
     const handleLogout = () => {
         logoutMutation.mutate();
     };
+
+    // Calculate initials: Take first 2 chars of username, or fallback to "KM"
+    const initials = user?.username
+        ? user.username.slice(0, 2).toUpperCase()
+        : "ZR";
 
     return (
         <SidebarMenu>
@@ -41,9 +45,9 @@ export function NavUser() {
                             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                         >
                             <Avatar className="h-8 w-8 rounded-lg">
-                                <AvatarImage src="" alt="" />
+                                <AvatarImage src="" alt={user?.username} />
                                 <AvatarFallback className="rounded-lg">
-                                    KM
+                                    {initials}
                                 </AvatarFallback>
                             </Avatar>
                             <div className="grid flex-1 text-left text-sm leading-tight">
@@ -58,7 +62,7 @@ export function NavUser() {
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
-                        className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+                        className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
                         side={isMobile ? "bottom" : "right"}
                         align="end"
                         sideOffset={4}
@@ -66,9 +70,9 @@ export function NavUser() {
                         <DropdownMenuLabel className="p-0 font-normal">
                             <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                                 <Avatar className="h-8 w-8 rounded-lg">
-                                    <AvatarImage src="" alt="" />
+                                    <AvatarImage src="" alt={user?.username} />
                                     <AvatarFallback className="rounded-lg">
-                                        KM
+                                        {initials}
                                     </AvatarFallback>
                                 </Avatar>
                                 <div className="grid flex-1 text-left text-sm leading-tight">

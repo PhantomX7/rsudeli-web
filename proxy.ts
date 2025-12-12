@@ -1,20 +1,12 @@
 // middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { AUTH_COOKIES } from "@/lib/constants"; // Import the new constants
+import { AUTH_COOKIES } from "@/lib/constants";
 
 export function proxy(request: NextRequest) {
-    const { pathname, searchParams } = request.nextUrl;
+    const { pathname, search } = request.nextUrl; // Use 'search' for the full query string (?a=b)
 
-    // 1. Skip middleware for static files and API routes
-    if (
-        pathname.startsWith("/_next") ||
-        pathname.startsWith("/api") ||
-        pathname.includes(".") ||
-        pathname === "/favicon.ico"
-    ) {
-        return NextResponse.next();
-    }
+    // The Matcher below prevents this function from running on those files anyway.
 
     // =========================================================
     // ADMIN AUTHENTICATION LOGIC
@@ -33,27 +25,24 @@ export function proxy(request: NextRequest) {
         // Case B: Admin is NOT logged in, trying to access protected admin page -> Redirect to Login
         if (!isAdminLoginPage && !hasAdminToken) {
             const loginUrl = new URL("/admin/login", request.url);
-            // Preserve the original URL to redirect back after login
-            loginUrl.searchParams.set(
-                "from",
-                pathname + searchParams.toString()
-            );
+            
+            // Original code result: "/admin/userssort=asc" (Missing ?)
+            // New code result: "/admin/users?sort=asc"
+            loginUrl.searchParams.set("from", pathname + search);
+            
             return NextResponse.redirect(loginUrl);
         }
 
-        // Allow access to admin pages
         return NextResponse.next();
     }
 
     // =========================================================
-    // PUBLIC AUTHENTICATION LOGIC (Optional but recommended)
+    // PUBLIC AUTHENTICATION LOGIC
     // =========================================================
     const hasPublicToken = request.cookies.has(
         AUTH_COOKIES.PUBLIC.ACCESS_TOKEN
     );
     const isPublicLoginPage = pathname === "/login" || pathname === "/register";
-
-    // Define your protected public routes here
     const isProtectedPublicRoute =
         pathname.startsWith("/profile") || pathname.startsWith("/account");
 
@@ -65,7 +54,7 @@ export function proxy(request: NextRequest) {
     // Case D: Customer is NOT logged in, trying to access protected page -> Redirect to Login
     if (isProtectedPublicRoute && !hasPublicToken) {
         const loginUrl = new URL("/login", request.url);
-        loginUrl.searchParams.set("from", pathname + searchParams.toString());
+        loginUrl.searchParams.set("from", pathname + search);
         return NextResponse.redirect(loginUrl);
     }
 
@@ -73,10 +62,6 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-    // Match all request paths except for the ones starting with:
-    // - api (API routes)
-    // - _next/static (static files)
-    // - _next/image (image optimization files)
-    // - favicon.ico (favicon file)
+    // This matcher is correct. It handles the exclusions for you.
     matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };

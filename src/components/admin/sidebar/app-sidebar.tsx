@@ -1,8 +1,9 @@
-// @/components/admin/sidebar/app-sidebar.tsx
 "use client";
 
 import * as React from "react";
-import { Command } from "lucide-react";
+import { Command, type LucideIcon } from "lucide-react";
+import Link from "next/link";
+
 import { NavMain } from "@admin/sidebar/nav-main";
 import { NavUser } from "@admin/sidebar/nav-user";
 import {
@@ -14,22 +15,23 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import Link from "next/link";
-import { LucideIcon } from "lucide-react";
 
-interface NavItem {
+// Export these so Layout can use them for Type Casting
+export interface NavItem {
     title: string;
     url: string;
 }
 
-interface NavMainItem {
+export interface NavMainItem {
     title: string;
     url: string;
     icon: LucideIcon;
-    items: NavItem[];
+    isActive?: boolean;
+    items?: NavItem[];
+    requiredRoles?: string[];
 }
 
-interface SidebarData {
+export interface SidebarData {
     navMain: NavMainItem[];
 }
 
@@ -45,7 +47,7 @@ export function AppSidebar({ data, ...props }: AppSidebarProps) {
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <Link href="/admin">
-                                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                                     <Command className="size-4" />
                                 </div>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -61,9 +63,11 @@ export function AppSidebar({ data, ...props }: AppSidebarProps) {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
+
             <SidebarContent>
-                <NavMain items={data.navMain} />
+                {data.navMain && <NavMain items={data.navMain} />}
             </SidebarContent>
+
             <SidebarFooter>
                 <NavUser />
             </SidebarFooter>
