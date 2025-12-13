@@ -1,8 +1,5 @@
 "use client";
 
-import "@/app/globals.css";
-import "@/app/theme.css";
-
 import React from "react";
 import { Separator } from "@/components/ui/separator";
 import {
