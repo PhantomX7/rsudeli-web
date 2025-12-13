@@ -7,6 +7,7 @@ import type { Banner } from "@/types/banner";
 import Link from "next/link";
 import { ConfirmButton } from "@/components/common/confirm-button";
 import { formatDateTimeValue } from "@/lib/format";
+import Image from "next/image";
 
 interface BannerColumnsProps {
     onDelete: (id: number) => void;
@@ -36,15 +37,17 @@ export function createBannerColumns({
             cell: ({ row }) => {
                 const imageUrl = row.getValue("image_url") as string;
                 return (
-                    <div className="w-28 h-16 relative">
+                    <div className="relative w-28 h-16 overflow-hidden rounded bg-gray-100">
                         {imageUrl ? (
-                            <img
+                            <Image
                                 src={imageUrl}
                                 alt={row.getValue("name")}
-                                className="w-full h-full object-cover rounded"
+                                fill // Required for external URLs when width/height aren't known
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                className="object-cover"
                             />
                         ) : (
-                            <div className="w-full h-full bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500">
+                            <div className="flex w-full h-full items-center justify-center text-xs text-gray-500">
                                 No image
                             </div>
                         )}
@@ -53,27 +56,8 @@ export function createBannerColumns({
             },
         },
         {
-            accessorKey: "link_url",
-            header: "Link",
-            cell: ({ row }) => {
-                const linkUrl = row.getValue("link_url") as string;
-                return linkUrl ? (
-                    <a
-                        href={linkUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline truncate block max-w-[200px]"
-                    >
-                        {linkUrl}
-                    </a>
-                ) : (
-                    <span className="text-gray-400">No link</span>
-                );
-            },
-        },
-        {
             accessorKey: "display_order",
-            header: "Display Order",
+            header: "Order",
             cell: ({ row }) => row.getValue("display_order"),
         },
         {

@@ -17,15 +17,7 @@ import { useBannerMutations } from "@/hooks/admin/use-banners";
 
 const bannerSchema = z.object({
     name: z.string().min(1, "Banner name is required."),
-    key: z.enum([
-        "home",
-        "category-1",
-        "category-2",
-        "category-3",
-        "category-4",
-        "category-5",
-        "top",
-    ]),
+    key: z.enum(["home", "service"]),
     image: z
         .instanceof(File)
         .refine(
@@ -51,18 +43,12 @@ const bannerSchema = z.object({
         )
         .nullable(),
     display_order: z.coerce.number().int().min(0),
-    link_url: z.string(),
     is_active: z.boolean(),
 });
 
 const BANNER_KEY_OPTIONS = [
     { label: "Home", value: "home" },
-    { label: "Category 1", value: "category-1" },
-    { label: "Category 2", value: "category-2" },
-    { label: "Category 3", value: "category-3" },
-    { label: "Category 4", value: "category-4" },
-    { label: "Category 5", value: "category-5" },
-    { label: "Top", value: "top" },
+    { label: "Service", value: "service" },
 ];
 
 interface BannerFormProps {
@@ -88,7 +74,6 @@ export function BannerForm({ initialData, bannerId }: BannerFormProps) {
             image: null as File | null,
             mobile_image: null as File | null,
             display_order: initialData?.display_order || 0,
-            link_url: initialData?.link_url || "",
             is_active: initialData?.is_active ?? true,
         },
         validators: {
@@ -189,19 +174,6 @@ export function BannerForm({ initialData, bannerId }: BannerFormProps) {
                             maxSize={5 * 1024 * 1024}
                             accept="image/jpeg,image/png,image/webp"
                             error={fieldErrors?.mobile_image}
-                        />
-                    )}
-                </form.Field>
-
-                <form.Field name="link_url">
-                    {(field) => (
-                        <FormInput
-                            field={field}
-                            label="Link URL"
-                            type="text"
-                            placeholder="https://example.com (optional)"
-                            disabled={isPending}
-                            error={fieldErrors?.link_url}
                         />
                     )}
                 </form.Field>

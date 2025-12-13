@@ -1,7 +1,7 @@
 "use client";
 
 import { createBannerColumns } from "./columns";
-import { useMemo } from "react";
+// Removed useMemo import as it conflicts with React Compiler here
 import { useQueryClient } from "@tanstack/react-query";
 import { FilterableDataTable } from "@/components/data-table/filterable-data-table";
 import { FilterFieldConfig, SortFieldConfig, PaginationParams } from "@/types/pagination";
@@ -25,7 +25,7 @@ const FILTER_FIELDS: FilterFieldConfig[] = [
         operators: ["eq"],
         options: [
             { value: "home", label: "Home" },
-            { value: "category", label: "Category" },
+            { value: "service", label: "Service" },
         ],
         placeholder: "Select key",
     },
@@ -52,13 +52,10 @@ export function BannerList({ params }: BannerListProps) {
     const { data: banners, isLoading, error } = usePaginatedBanners(params);
     const { deleteMutation } = useBannerMutations();
 
-    const columns = useMemo(
-        () => createBannerColumns({
-            onDelete: (id: number) => deleteMutation.mutate(id),
-            isDeletePending: deleteMutation.isPending,
-        }),
-        [deleteMutation.isPending, deleteMutation.mutate]
-    );
+    const columns = createBannerColumns({
+        onDelete: (id: number) => deleteMutation.mutate(id),
+        isDeletePending: deleteMutation.isPending,
+    });
 
     return (
         <FilterableDataTable
