@@ -155,6 +155,8 @@ export default function ImageUpload({
                                 "h-full w-full object-cover transition-opacity",
                                 imageLoading ? "opacity-0" : "opacity-100"
                             )}
+                            width={200}
+                            height={200}
                             onLoad={() => setImageLoading(false)}
                             onError={() => setImageLoading(false)}
                         />
