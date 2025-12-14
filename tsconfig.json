@@ -23,6 +23,9 @@
       "@admin/*": [
         "./src/components/admin/*"
       ],
+      "@public/*": [
+        "./src/components/public/*"
+      ],
     }
   },
   "include": [

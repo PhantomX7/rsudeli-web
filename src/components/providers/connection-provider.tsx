@@ -79,8 +79,7 @@ export function ConnectionProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         const handleOnline = () => {
             setState((prev) => ({ ...prev, isOffline: false }));
-            // Optional: Auto-dismiss connection errors when back online
-            // dismiss();
+
             queryClient.resumePausedMutations();
             queryClient.invalidateQueries();
         };
