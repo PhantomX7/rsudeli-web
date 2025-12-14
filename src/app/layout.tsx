@@ -3,6 +3,7 @@ import ReactQueryProvider from "@/components/providers/react-query-provider";
 import { Toaster } from "@/components/ui/sonner";
 import "@/app/globals.css";
 import "@/app/theme.css";
+import { ConnectionProvider } from "@/components/providers/connection-provider";
 
 export default function RootLayout({
     children,
@@ -13,8 +14,10 @@ export default function RootLayout({
         <html lang="en">
             <body>
                 <ReactQueryProvider>
-                    <Toaster position="top-center" />
-                    {children}
+                    <ConnectionProvider>
+                        <Toaster position="top-center" />
+                        {children}
+                    </ConnectionProvider>
                 </ReactQueryProvider>
             </body>
         </html>

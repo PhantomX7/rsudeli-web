@@ -10,7 +10,7 @@ import { FormButton } from "@/components/form/form-button";
 import { FormInput } from "@/components/form/form-input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import {  FieldGroup } from "@/components/ui/field";
-import { useAdminChangePassword } from "@/hooks/admin/use-auth";
+import { useAdminAuthMutations } from "@/hooks/admin/use-auth";
 import { ChangePasswordData } from "@/types/auth";
 import { Lock } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -30,7 +30,7 @@ const changePasswordSchema = z
     });
 
 export function ChangePasswordCard() {
-    const changePasswordMutation = useAdminChangePassword();
+    const { changePasswordMutation } = useAdminAuthMutations();
     const [showPasswordForm, setShowPasswordForm] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
 

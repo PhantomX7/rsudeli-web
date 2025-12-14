@@ -1,3 +1,4 @@
+// components/admin/sidebar/nav-user.tsx
 "use client";
 
 import { ChevronsUpDown, LogOut, Cog } from "lucide-react";
@@ -17,20 +18,18 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from "@/components/ui/sidebar";
-import { useAdminAuthStore } from "@/stores/admin-auth-store";
-import { useAdminLogout } from "@/hooks/admin/use-auth";
+import { useAdminAuth, useAdminAuthMutations } from "@/hooks/admin/use-auth";
 import Link from "next/link";
 
 export function NavUser() {
-    const user = useAdminAuthStore((state) => state.user);
-    const logoutMutation = useAdminLogout();
+    const { user } = useAdminAuth();
+    const { logoutMutation } = useAdminAuthMutations();
     const { isMobile } = useSidebar();
 
     const handleLogout = () => {
         logoutMutation.mutate();
     };
 
-    // Calculate initials: Take first 2 chars of username, or fallback to "KM"
     const initials = user?.username
         ? user.username.slice(0, 2).toUpperCase()
         : "ZR";

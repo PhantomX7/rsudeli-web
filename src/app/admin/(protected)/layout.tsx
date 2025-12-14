@@ -1,63 +1,53 @@
+// app/admin/layout.tsx
 "use client";
 
-import React from "react";
+import { useMemo } from "react";
 import { Separator } from "@/components/ui/separator";
 import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
+    SidebarInset,
+    SidebarProvider,
+    SidebarTrigger,
 } from "@/components/ui/sidebar";
-
 import { AuthGuard } from "@/components/auth/auth-guard";
 import Breadcrumb from "@admin/breadcrumb";
-import { AppSidebar, type NavMainItem } from "@admin/sidebar/app-sidebar"; // Import type
+import { AppSidebar, type NavMainItem } from "@admin/sidebar/app-sidebar";
 import { sidebarConfig } from "@/config/sidebar";
 import { useAdminAuth } from "@/hooks/admin/use-auth";
 
 export default function AdminLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const { user } = useAdminAuth();
-  
-  // The filtering is instant. The React Compiler will auto-memoize the result if needed.
+    children,
+}: {
+    children: React.ReactNode;
+}) {
+    const { user } = useAdminAuth();
 
-  const navMain = (sidebarConfig.navMain || []).filter((item) => {
-    // 1. If no roles defined, everyone sees it
-    if (!item.requiredRoles || item.requiredRoles.length === 0) {
-      return true;
-    }
+    // Filter sidebar based on user role
+    const filteredSidebarConfig = useMemo(() => {
+        const navMain = (sidebarConfig.navMain || []).filter((item) => {
+            if (!item.requiredRoles?.length) return true;
+            return user?.role && item.requiredRoles.includes(user.role);
+        });
+        return { navMain: navMain as NavMainItem[] };
+    }, [user]);
 
-    // 2. If user exists and has a role, check if role is allowed
-    if (user?.role) {
-      return item.requiredRoles.includes(user.role);
-    }
-
-    return false;
-  });
-
-  const filteredSidebarConfig = {
-    navMain: navMain as NavMainItem[],
-  };
-
-  return (
-    <AuthGuard requiredRole={["admin", "root"]}>
-      <SidebarProvider>
-        <AppSidebar data={filteredSidebarConfig} />
-        
-        <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 px-4 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-            <Breadcrumb />
-          </header>
-          
-          <div className="flex flex-1 flex-col gap-4 p-4">
-            {children}
-          </div>
-        </SidebarInset>
-      </SidebarProvider>
-    </AuthGuard>
-  );
+    return (
+        <AuthGuard requiredRoles={["admin", "root"]}>
+            <SidebarProvider>
+                <AppSidebar data={filteredSidebarConfig} />
+                <SidebarInset>
+                    <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                        <SidebarTrigger className="-ml-1" />
+                        <Separator
+                            orientation="vertical"
+                            className="mr-2 h-4"
+                        />
+                        <Breadcrumb />
+                    </header>
+                    <main className="flex flex-1 flex-col gap-4 p-4">
+                        {children}
+                    </main>
+                </SidebarInset>
+            </SidebarProvider>
+        </AuthGuard>
+    );
 }

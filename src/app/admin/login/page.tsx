@@ -7,7 +7,7 @@ import { FormInput } from "@/components/form/form-input";
 import { FormButton } from "@/components/form/form-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FieldGroup } from "@/components/ui/field";
-import { useAdminLogin } from "@/hooks/admin/use-auth";
+import { useAdminAuthMutations } from "@/hooks/admin/use-auth";
 
 const loginSchema = z.object({
     username: z.string().min(4, "Username must be at least 4 characters"),
@@ -15,7 +15,7 @@ const loginSchema = z.object({
 });
 
 export default function LoginPage() {
-    const loginMutation = useAdminLogin();
+    const { loginMutation } = useAdminAuthMutations();
 
     const form = useForm({
         defaultValues: {
