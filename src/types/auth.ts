@@ -1,4 +1,6 @@
 // src/types/auth.ts
+import type { User } from "@/types/user";
+
 export interface LoginCredentials {
     username: string;
     password: string;
@@ -17,15 +19,6 @@ export interface RegisterData {
 export interface AuthTokens {
     access_token: string;
     refresh_token: string;
-}
-
-export interface User {
-    name: string;
-    id: string;
-    role: string;
-    username: string;
-    email?: string;
-    phone?: string;
 }
 
 export interface AuthData {

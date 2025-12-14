@@ -1,9 +1,4 @@
-import {
-    LayoutDashboard,
-    User,
-    Image,
-    Cog,
-} from "lucide-react";
+import { LayoutDashboard, User, Image, Cog } from "lucide-react";
 
 // Helper constants to ensure consistency
 const ROLES = {
@@ -64,13 +59,34 @@ export const sidebarConfig = {
             ROLE_GROUPS.ADMIN_ROOT
         ),
 
-        // Root Only
+        createNavItem(
+            "Specialist",
+            User,
+            [
+                { title: "List", url: "/admin/specialist" },
+                { title: "Create", url: "/admin/specialist/create" },
+            ],
+            "#",
+            ROLE_GROUPS.ADMIN_ROOT
+        ),
+
+        createNavItem(
+            "Doctor",
+            User,
+            [
+                { title: "List", url: "/admin/doctor" },
+                { title: "Create", url: "/admin/doctor/create" },
+            ],
+            "#",
+            ROLE_GROUPS.ADMIN_ROOT
+        ),
+
         createNavItem(
             "Config",
             Cog,
             [{ title: "List", url: "/admin/config" }],
             "#",
-            ROLE_GROUPS.ROOT_ONLY
+            ROLE_GROUPS.ADMIN_ROOT
         ),
     ],
 };

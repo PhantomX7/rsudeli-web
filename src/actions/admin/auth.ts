@@ -11,10 +11,10 @@ import {
 import { adminApiClient } from "@/lib/api"; // Use explicit admin client
 import type {
     LoginCredentials,
-    User,
     AuthTokens,
     ChangePasswordData,
 } from "@/types/auth";
+import type { User } from "@/types/user";
 import type { ApiResponse, ActionResponse } from "@/types/common";
 import { ADMIN_API_ENDPOINTS } from "@/lib/constants";
 import {

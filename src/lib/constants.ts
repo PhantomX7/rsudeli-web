@@ -25,33 +25,18 @@ export const ADMIN_API_ENDPOINTS = {
         GENERAL: "/admin/blog",
         DETAIL: (id: number) => `/admin/blog/${id}`,
     },
-    BRAND: {
-        GENERAL: "/admin/brand",
-        DETAIL: (id: number) => `/admin/brand/${id}`,
-    },
-    CATEGORY: {
-        GENERAL: "/admin/category",
-        DETAIL: (id: number) => `/admin/category/${id}`,
-    },
     CONFIG: {
         GENERAL: "/admin/config",
         DETAIL: (id: number) => `/admin/config/${id}`,
         FIND_BY_KEY: (key: string) => `/admin/config/key/${key}`,
     },
-    PRODUCT: {
-        GENERAL: "/admin/product",
-        DETAIL: (id: number) => `/admin/product/${id}`,
-        EXPORT: "/admin/product/export",
-        EXPORT_ALL: "/admin/product/export/all",
-        IMPORT: "/admin/product/import",
-        IMPORT_VALIDATE: "/admin/product/import/validate",
+    DOCTOR: {
+        GENERAL: "/admin/doctor",
+        DETAIL: (id: number) => `/admin/doctor/${id}`,
     },
-    SPEC_DEFINITION: {
-        GENERAL: "/admin/spec-definition",
-        DETAIL: (id: number) => `/admin/spec-definition/${id}`,
-    },
-    STATISTIC: {
-        GENERAL: "/admin/statistic",
+    SPECIALIST: {
+        GENERAL: "/admin/specialist",
+        DETAIL: (id: number) => `/admin/specialist/${id}`,
     },
     USER: {
         GENERAL: "/admin/user",

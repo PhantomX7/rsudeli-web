@@ -52,10 +52,10 @@ export function AppSidebar({ data, ...props }: AppSidebarProps) {
                                 </div>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
                                     <span className="truncate font-medium">
-                                        Komputer Medan
+                                        RSU Deli
                                     </span>
                                     <span className="truncate text-xs">
-                                        Admin Panel
+                                        Admin Panel 
                                     </span>
                                 </div>
                             </Link>

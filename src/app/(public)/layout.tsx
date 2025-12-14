@@ -1,21 +1,7 @@
 import type { Metadata } from "next";
 // Using Open Sans for body text (readable) and Montserrat for headings (modern/medical)
-import { Open_Sans, Montserrat } from "next/font/google";
 import Header from "@public/layout/header"; // Adjust path to where you saved the Header
 import { Footer } from "@public/layout/footer";
-
-// --- Font Configuration ---
-const openSans = Open_Sans({
-    subsets: ["latin"],
-    display: "swap",
-    variable: "--font-open-sans",
-});
-
-const montserrat = Montserrat({
-    subsets: ["latin"],
-    display: "swap",
-    variable: "--font-montserrat",
-});
 
 // --- Metadata Configuration ---
 const SITE_NAME = "RSU Deli";

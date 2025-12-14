@@ -22,7 +22,7 @@ export default function Header() {
 
     return (
         // Added sticky to the whole header so the phone number stays visible on scroll (optional)
-        <header className="w-full relative z-50 bg-white shadow-sm sticky top-0">
+        <header className="w-full sticky lg:relative z-50 bg-white shadow-sm  top-0">
             {/* --- Top Bar (Logo & Burger) --- */}
             <div className="container mx-auto px-4 py-3 md:py-4">
                 <div className="flex items-center justify-between">
@@ -138,7 +138,7 @@ export default function Header() {
 
             {/* --- Mobile Menu Overlay --- */}
             <div
-                className={`fixed inset-0 bg-black/50 z-[60] transition-opacity duration-300 lg:hidden ${
+                className={`fixed inset-0 bg-black/50 z-60 transition-opacity duration-300 lg:hidden ${
                     isMobileMenuOpen
                         ? "opacity-100 visible"
                         : "opacity-0 invisible"
@@ -148,7 +148,7 @@ export default function Header() {
 
             {/* Drawer */}
             <div
-                className={`fixed inset-y-0 right-0 w-[85%] max-w-sm bg-[#32c69a] z-[70] shadow-2xl transform transition-transform duration-300 lg:hidden overflow-y-auto ${
+                className={`fixed inset-y-0 right-0 w-[85%] max-w-sm bg-[#32c69a] z-70 shadow-2xl transform transition-transform duration-300 lg:hidden overflow-y-auto ${
                     isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
                 }`}
             >

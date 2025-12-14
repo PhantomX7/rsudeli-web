@@ -2,7 +2,6 @@
 "use client";
 
 import { useMemo } from "react";
-import { Separator } from "@/components/ui/separator";
 import {
     SidebarInset,
     SidebarProvider,
