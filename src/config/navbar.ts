@@ -3,12 +3,7 @@ export const NAVIGATION = [
     { label: "Tentang kami", href: "/tentang" },
     {
         label: "Dokter Kami",
-        href: "#",
-        children: [
-            { label: "Dokter Umum", href: "/dokter/umum" },
-            { label: "Dokter Spesialis", href: "/dokter/spesialis" },
-            { label: "Jadwal Dokter", href: "/dokter/jadwal" },
-        ],
+        href: "/dokter",
     },
     { label: "Fasilitas & Layanan", href: "/fasilitas" },
     {

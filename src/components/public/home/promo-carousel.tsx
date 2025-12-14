@@ -77,19 +77,20 @@ export function PromoCarousel({ banners }: PromoCarouselProps) {
                         ))}
                     </CarouselContent>
 
-                    {/* Custom Pagination Dots */}
-                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-2 z-10 bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full">
+                    <div
+                        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10 
+                bg-black/10 backdrop-blur-md border border-white/10 p-2 rounded-full shadow-lg"
+                    >
                         {Array.from({ length: count }).map((_, index) => (
                             <button
                                 key={index}
                                 className={cn(
-                                    "h-2.5 rounded-full transition-all duration-300",
+                                    "h-2 rounded-full transition-all duration-500 ease-out", // Smoother transition
                                     index + 1 === current
-                                        ? "w-8 bg-[#32c69a]" // Brand Color Active
-                                        : "w-2.5 bg-white/70 hover:bg-white" // Inactive
+                                        ? "w-8 bg-[#32c69a] shadow-[0_0_10px_rgba(50,198,154,0.5)]" // Add Glow
+                                        : "w-2 bg-white/60 hover:bg-white"
                                 )}
                                 onClick={() => api?.scrollTo(index)}
-                                aria-label={`Go to slide ${index + 1}`}
                             />
                         ))}
                     </div>

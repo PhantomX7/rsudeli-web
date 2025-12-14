@@ -39,7 +39,7 @@ export function ServiceHighlights() {
         <section className="relative z-20 px-4 pb-12">
             <div className="container mx-auto">
                 {/* Negative margin pulls the grid UP over the hero section */}
-                <div className="-mt-12 lg:-mt-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="relative -mt-12 lg:-mt-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {SERVICES.map((service, idx) => (
                         <div
                             key={idx}

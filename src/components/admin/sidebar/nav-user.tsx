@@ -85,7 +85,7 @@ export function NavUser() {
                             </div>
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
+                        {/* <DropdownMenuGroup>
                             <DropdownMenuItem asChild>
                                 <Link href="/admin/profile">
                                     <Cog />
@@ -93,7 +93,7 @@ export function NavUser() {
                                 </Link>
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
-                        <DropdownMenuSeparator />
+                        <DropdownMenuSeparator /> */}
                         <DropdownMenuItem
                             onClick={handleLogout}
                             disabled={logoutMutation.isPending}

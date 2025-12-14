@@ -44,13 +44,10 @@ export function createDoctorColumns({
         },
         {
             accessorKey: "name",
-            header: "Name & Title",
+            header: "Title & Name",
             cell: ({ row }) => (
                 <div className="flex flex-col">
-                    <span className="font-medium">{row.original.name}</span>
-                    <span className="text-xs text-muted-foreground">
-                        {row.original.title}
-                    </span>
+                    <span className="font-medium"> {row.original.title} {row.original.name}</span>
                 </div>
             ),
         },
@@ -72,7 +69,7 @@ export function createDoctorColumns({
         },
         {
             accessorKey: "specialist",
-            header: "Specialty",
+            header: "Specialis",
             cell: ({ row }) => {
                 const specialist = row.original.specialist;
                 return specialist ? (

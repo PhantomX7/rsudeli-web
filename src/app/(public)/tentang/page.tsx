@@ -9,6 +9,7 @@ import {
     Clock,
     Users,
 } from "lucide-react";
+import Image from "next/image";
 
 export const metadata: Metadata = {
     title: "Tentang Kami",
@@ -54,19 +55,16 @@ export default function AboutPage() {
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                         {/* Left: Image/Visual */}
-                        <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-2xl">
-                            {/* Ideally use a real photo of the hospital building here */}
-                            <div
-                                className="absolute inset-0 bg-gray-200"
-                                style={{
-                                    backgroundImage:
-                                        "url('http://res.cloudinary.com/rsudeli/image/upload/v1531979857/ki9o65ulx0dl3cbuac5n.jpg')",
-                                    backgroundSize: "cover",
-                                    backgroundPosition: "center",
-                                }}
+                        <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-2xl group">
+                            <Image
+                                src="https://res.cloudinary.com/rsudeli/image/upload/v1531979857/ki9o65ulx0dl3cbuac5n.jpg"
+                                alt="Gedung RSU Deli"
+                                fill
+                                className="object-cover transition-transform duration-700 group-hover:scale-105"
                             />
-                            {/* Floating Badge */}
-                            <div className="absolute bottom-6 left-6 bg-white p-6 rounded-xl shadow-lg border-l-4 border-[#32c69a]">
+
+                            {/* Floating Badge (Add a subtle glass effect) */}
+                            <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm p-6 rounded-xl shadow-lg border-l-4 border-[#32c69a]">
                                 <p className="text-[#32c69a] font-bold text-4xl">
                                     50+
                                 </p>
@@ -214,8 +212,17 @@ export default function AboutPage() {
             </section>
 
             {/* 5. Our Roles Section */}
-            <section className="py-16 bg-[#32c69a]">
-                <div className="container mx-auto px-4">
+            <section className="relative py-16 bg-[#32c69a] overflow-hidden">
+                {/* Background Pattern */}
+                <div
+                    className="absolute inset-0 opacity-10"
+                    style={{
+                        backgroundImage:
+                            "radial-gradient(#fff 1px, transparent 1px)",
+                        backgroundSize: "20px 20px",
+                    }}
+                />
+                <div className="container relative z-10 mx-auto px-4">
                     <div className="max-w-4xl mx-auto bg-white rounded-2xl p-8 md:p-12 shadow-2xl">
                         <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
                             Peran & Tanggung Jawab

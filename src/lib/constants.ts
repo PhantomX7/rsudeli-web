@@ -66,6 +66,14 @@ export const PUBLIC_API_ENDPOINTS = {
         GENERAL: "/public/config",
         FIND_BY_KEY: (key: string) => `/public/config/key/${key}`,
     },
+    DOCTOR: {
+        GENERAL: "/public/doctor",
+        DETAIL: (id: number) => `/public/doctor/${id}`,
+    },
+    SPECIALIST: {
+        GENERAL: "/public/specialist",
+        DETAIL: (id: number) => `/public/specialist/${id}`,
+    },
 } as const;
 
 export const TOKEN_KEYS = {
