@@ -26,7 +26,7 @@ export default async function Home() {
             <section className="py-20 bg-white">
                 <div className="container mx-auto px-4 text-center max-w-3xl">
                     <h2 className="text-3xl font-bold text-gray-800 mb-6">
-                        Mengapa Memilih RSU Deli?
+                        Mengapa Memilih RSU Deli ?
                     </h2>
                     <p className="text-gray-600 leading-relaxed mb-8">
                         Sejak didirikan, RSU Deli telah menjadi kepercayaan

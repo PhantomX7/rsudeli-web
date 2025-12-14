@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image"; // Assuming you use Next.js Image
+import Image from "next/image";
 import Logo from "@/public/logo.png";
 
 import { Phone, Menu, X, ChevronDown } from "lucide-react";
@@ -21,24 +21,24 @@ export default function Header() {
     };
 
     return (
-        <header className="w-full relative z-50 bg-white">
-            {/* --- Top Bar (Logo & Contact) --- */}
-            <div className="container mx-auto px-4 py-4">
+        // Added sticky to the whole header so the phone number stays visible on scroll (optional)
+        <header className="w-full relative z-50 bg-white shadow-sm sticky top-0">
+            {/* --- Top Bar (Logo & Burger) --- */}
+            <div className="container mx-auto px-4 py-3 md:py-4">
                 <div className="flex items-center justify-between">
                     {/* Logo */}
                     <Link href="/" className="shrink-0">
-                        {/* Replace src with your actual image path */}
                         <Image
                             src={Logo}
                             alt="RSU Deli Logo"
-                            width={100}
-                            height={100}
-                            className="h-12 w-auto md:h-16"
+                            width={120}
+                            height={120}
+                            className="h-10 w-auto md:h-14 lg:h-16"
                         />
                     </Link>
 
                     {/* Desktop Right Side (Socials & Phone) */}
-                    <div className="hidden md:flex items-center gap-6">
+                    <div className="hidden lg:flex items-center gap-6">
                         <div className="flex items-center gap-3 text-gray-600">
                             <a
                                 href="https://www.instagram.com/rsudeli/"
@@ -68,19 +68,34 @@ export default function Header() {
 
                     {/* Mobile Menu Button */}
                     <button
-                        className="md:hidden p-2 text-gray-600 hover:text-[#32c69a]"
+                        className="lg:hidden p-2 text-gray-600 hover:text-[#32c69a]"
                         onClick={() => setIsMobileMenuOpen(true)}
+                        aria-label="Toggle menu"
                     >
                         <Menu className="h-8 w-8" />
                     </button>
                 </div>
             </div>
 
-            {/* --- Main Navigation (Desktop) --- */}
-            <div className="hidden md:block bg-gray-50 border-t border-b border-gray-100 sticky top-0 z-40 shadow-sm">
+            {/* --- NEW: Mobile Hotline Bar --- */}
+            {/* Visible only on lg and below. Clickable for quick calling. */}
+            <div className="lg:hidden bg-[#32c69a] text-white border-t border-white/20">
+                <a
+                    href="tel:+62614565229"
+                    className="container mx-auto px-4 py-2.5 flex items-center justify-center gap-2 hover:bg-white/10 transition-colors"
+                >
+                    <Phone className="h-4 w-4 fill-white" />
+                    <span className="text-sm font-bold tracking-wide">
+                        IGD / Info: +62 61 4565 229
+                    </span>
+                </a>
+            </div>
+
+            {/* --- Main Navigation (Desktop Only) --- */}
+            <div className="hidden lg:block bg-gray-50 border-t border-b border-gray-100">
                 <div className="container mx-auto px-4">
                     <nav className="flex justify-between items-center h-14">
-                        <ul className="flex flex-wrap items-center gap-1 lg:gap-6 w-full">
+                        <ul className="flex flex-wrap items-center justify-between w-full gap-4 xl:gap-6">
                             {NAVIGATION.map((item) => (
                                 <li
                                     key={item.label}
@@ -88,7 +103,7 @@ export default function Header() {
                                 >
                                     <Link
                                         href={item.href}
-                                        className="flex items-center gap-1 text-sm font-semibold uppercase tracking-wide text-gray-600 hover:text-[#32c69a] transition-colors py-4 px-2"
+                                        className="flex items-center gap-1 text-sm font-semibold uppercase tracking-wide text-gray-600 hover:text-[#32c69a] transition-colors py-4 px-1"
                                     >
                                         {item.label}
                                         {item.children && (
@@ -122,9 +137,8 @@ export default function Header() {
             </div>
 
             {/* --- Mobile Menu Overlay --- */}
-            {/* Backdrop */}
             <div
-                className={`fixed inset-0 bg-black/50 z-60 transition-opacity duration-300 md:hidden ${
+                className={`fixed inset-0 bg-black/50 z-[60] transition-opacity duration-300 lg:hidden ${
                     isMobileMenuOpen
                         ? "opacity-100 visible"
                         : "opacity-0 invisible"
@@ -134,7 +148,7 @@ export default function Header() {
 
             {/* Drawer */}
             <div
-                className={`fixed inset-y-0 right-0 w-[85%] max-w-sm bg-[#32c69a] z-70 shadow-2xl transform transition-transform duration-300 md:hidden overflow-y-auto ${
+                className={`fixed inset-y-0 right-0 w-[85%] max-w-sm bg-[#32c69a] z-[70] shadow-2xl transform transition-transform duration-300 lg:hidden overflow-y-auto ${
                     isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
                 }`}
             >
@@ -250,10 +264,6 @@ export default function Header() {
                             >
                                 <SiFacebook className="h-6 w-6" />
                             </a>
-                        </div>
-                        <div className="mt-4 flex justify-center items-center gap-2 text-white/90 text-sm">
-                            <Phone className="h-4 w-4" />
-                            <span>+62 61 4565 229</span>
                         </div>
                     </div>
                 </div>
