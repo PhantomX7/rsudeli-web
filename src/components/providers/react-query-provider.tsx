@@ -3,57 +3,70 @@
 
 import {
     isServer,
+    MutationCache,
+    QueryCache,
     QueryClient,
     QueryClientProvider,
 } from "@tanstack/react-query";
-import { ErrorTypes, type ApiErrorDetails } from "@/lib/helpers";
+import {
+    ErrorTypes,
+    type ApiErrorDetails,
+    type ErrorType,
+} from "@/lib/helpers";
 
-function handleGlobalError(error: unknown) {
-    const err = error as ApiErrorDetails | undefined;
+// 1. Type Guard
+function isApiError(error: unknown): error is ApiErrorDetails {
+    return typeof error === "object" && error !== null && "type" in error;
+}
+
+// 2. Global Error Handler
+function notifyGlobalError(error: unknown) {
+    if (!isApiError(error)) return;
 
     if (
-        err?.type === ErrorTypes.CONNECTION_ERROR ||
-        err?.type === ErrorTypes.SERVER_ERROR
+        error.type === ErrorTypes.CONNECTION_ERROR ||
+        error.type === ErrorTypes.SERVER_ERROR
     ) {
-        const handler = (window as any)?.__setConnectionError;
-        if (typeof handler === "function") {
-            handler(err.message, err.type);
-        }
+        // Explicitly type the CustomEvent generic for better safety
+        const event = new CustomEvent<ApiErrorDetails>("app:api-error", {
+            detail: error,
+        });
+        window.dispatchEvent(event);
     }
 }
 
 function makeQueryClient() {
     return new QueryClient({
+        queryCache: new QueryCache({ onError: notifyGlobalError }),
+        mutationCache: new MutationCache({ onError: notifyGlobalError }),
         defaultOptions: {
             queries: {
                 staleTime: 60 * 1000,
                 refetchOnWindowFocus: false,
                 refetchOnReconnect: true,
+                retryDelay: (attemptIndex) =>
+                    Math.min(1000 * 2 ** attemptIndex, 5000),
                 retry: (failureCount, error) => {
-                    const err = error as ApiErrorDetails | undefined;
+                    // If it's not our known API error format, stop retrying early
+                    if (!isApiError(error)) return failureCount < 1;
 
-                    // No retry for auth/forbidden/not-found
-                    if (
-                        err?.type === ErrorTypes.NOT_AUTHENTICATED ||
-                        err?.type === ErrorTypes.FORBIDDEN ||
-                        err?.type === ErrorTypes.NOT_FOUND
-                    ) {
-                        return false;
-                    }
+                    // Otherwise TS infers it as a specific subset of strings (e.g. "NOT_AUTH" | "FORBIDDEN")
+                    // and complains when you check if a wider type (e.g. "SERVER_ERROR") exists in it.
+                    const nonRetriable: ErrorType[] = [
+                        ErrorTypes.NOT_AUTHENTICATED,
+                        ErrorTypes.FORBIDDEN,
+                        ErrorTypes.NOT_FOUND,
+                    ];
 
-                    // Retry connection errors up to 2 times
-                    if (err?.type === ErrorTypes.CONNECTION_ERROR) {
+                    if (nonRetriable.includes(error.type)) return false;
+
+                    // Retry connection errors twice, others once
+                    if (error.type === ErrorTypes.CONNECTION_ERROR) {
                         return failureCount < 2;
                     }
 
-                    return failureCount < 1;
+                    return false;
                 },
-                retryDelay: (attemptIndex) =>
-                    Math.min(1000 * 2 ** attemptIndex, 5000),
-            },
-            mutations: {
-                retry: false,
-                onError: handleGlobalError,
             },
         },
     });
@@ -62,12 +75,8 @@ function makeQueryClient() {
 let browserQueryClient: QueryClient | undefined;
 
 function getQueryClient() {
-    if (isServer) {
-        return makeQueryClient();
-    }
-    if (!browserQueryClient) {
-        browserQueryClient = makeQueryClient();
-    }
+    if (isServer) return makeQueryClient();
+    if (!browserQueryClient) browserQueryClient = makeQueryClient();
     return browserQueryClient;
 }
 
@@ -77,7 +86,6 @@ export default function ReactQueryProvider({
     children: React.ReactNode;
 }) {
     const queryClient = getQueryClient();
-
     return (
         <QueryClientProvider client={queryClient}>
             {children}
