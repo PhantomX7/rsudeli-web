@@ -1,6 +1,7 @@
 // hooks/admin/use-auth.ts
 "use client";
 
+import { useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -31,6 +32,8 @@ export type AuthStatus =
  * Main auth query - React Query is the single source of truth
  */
 export function useAdminAuth() {
+    const queryClient = useQueryClient();
+
     const { data, isLoading, refetch } = useQuery({
         queryKey: QUERY_KEY,
         queryFn: getMeAction,
@@ -55,14 +58,22 @@ export function useAdminAuth() {
 
         if (errorType === ErrorTypes.NOT_AUTHENTICATED) {
             status = "unauthenticated";
-        } else if (errorType === ErrorTypes.CONNECTION_ERROR) {
-            status = "error";
-            errorMessage = getErrorMessage(data);
         } else {
             status = "error";
             errorMessage = getErrorMessage(data);
         }
     }
+
+    // Force logout - clears everything and redirects
+    const forceLogout = useCallback(async () => {
+        try {
+            await logoutAction();
+        } catch {
+            // Ignore errors
+        }
+        queryClient.clear();
+        window.location.href = "/admin/login";
+    }, [queryClient]);
 
     return {
         user: data?.data ?? null,
@@ -72,6 +83,7 @@ export function useAdminAuth() {
         isAuthenticated: status === "authenticated",
         isError: status === "error",
         refetch,
+        forceLogout,
     };
 }
 
@@ -82,13 +94,13 @@ export function useAdminAuthMutations() {
     const router = useRouter();
     const queryClient = useQueryClient();
 
-    const invalidateAuth = () => {
+    const invalidateAuth = useCallback(() => {
         queryClient.invalidateQueries({ queryKey: QUERY_KEY });
-    };
+    }, [queryClient]);
 
-    const clearAuth = () => {
+    const clearAuth = useCallback(() => {
         queryClient.removeQueries({ queryKey: QUERY_KEY });
-    };
+    }, [queryClient]);
 
     const loginMutation = useMutation({
         mutationFn: (credentials: LoginCredentials) =>

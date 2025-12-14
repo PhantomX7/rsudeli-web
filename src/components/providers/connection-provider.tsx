@@ -10,9 +10,10 @@ import {
     type ReactNode,
 } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { WifiOff, RefreshCw, X } from "lucide-react";
+import { WifiOff, RefreshCw, X, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ErrorTypes, type ErrorType } from "@/lib/helpers";
+import { logoutAction } from "@/actions/admin/auth";
 
 interface ConnectionContextType {
     isOffline: boolean;
@@ -20,6 +21,7 @@ interface ConnectionContextType {
     errorType: ErrorType | null;
     retry: () => void;
     dismiss: () => void;
+    forceLogout: () => Promise<void>;
 }
 
 const ConnectionContext = createContext<ConnectionContextType | null>(null);
@@ -42,13 +44,12 @@ export function ConnectionProvider({ children }: ConnectionProviderProps) {
     const [error, setError] = useState<string | null>(null);
     const [errorType, setErrorType] = useState<ErrorType | null>(null);
 
-    // Listen for online/offline events
+    // Online/offline handlers
     useEffect(() => {
         const handleOnline = () => {
             setIsOffline(false);
             setError(null);
             setErrorType(null);
-            // Refetch failed queries when back online
             queryClient.invalidateQueries();
         };
 
@@ -61,10 +62,7 @@ export function ConnectionProvider({ children }: ConnectionProviderProps) {
         window.addEventListener("online", handleOnline);
         window.addEventListener("offline", handleOffline);
 
-        // Check initial state
-        if (!navigator.onLine) {
-            handleOffline();
-        }
+        if (!navigator.onLine) handleOffline();
 
         return () => {
             window.removeEventListener("online", handleOnline);
@@ -72,14 +70,16 @@ export function ConnectionProvider({ children }: ConnectionProviderProps) {
         };
     }, [queryClient]);
 
-    // Set error from outside (called by QueryClient global error handler)
-    const setConnectionError = useCallback((message: string, type: ErrorType) => {
-        setError(message);
-        setErrorType(type);
-        setIsOffline(type === ErrorTypes.CONNECTION_ERROR);
-    }, []);
-
     // Expose setConnectionError globally for QueryClient
+    const setConnectionError = useCallback(
+        (message: string, type: ErrorType) => {
+            setError(message);
+            setErrorType(type);
+            setIsOffline(type === ErrorTypes.CONNECTION_ERROR);
+        },
+        []
+    );
+
     useEffect(() => {
         (window as any).__setConnectionError = setConnectionError;
         return () => {
@@ -99,9 +99,19 @@ export function ConnectionProvider({ children }: ConnectionProviderProps) {
         setErrorType(null);
     }, []);
 
+    const forceLogout = useCallback(async () => {
+        try {
+            await logoutAction();
+        } catch {
+            // Ignore
+        }
+        queryClient.clear();
+        window.location.href = "/admin/login";
+    }, [queryClient]);
+
     return (
         <ConnectionContext.Provider
-            value={{ isOffline, error, errorType, retry, dismiss }}
+            value={{ isOffline, error, errorType, retry, dismiss, forceLogout }}
         >
             {children}
             {error && <ConnectionErrorBanner />}
@@ -110,22 +120,24 @@ export function ConnectionProvider({ children }: ConnectionProviderProps) {
 }
 
 function ConnectionErrorBanner() {
-    const { error, errorType, retry, dismiss } = useConnection();
+    const { error, errorType, retry, dismiss, forceLogout } = useConnection();
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-    const isConnectionError = errorType === ErrorTypes.CONNECTION_ERROR;
-    const isServerError = errorType === ErrorTypes.SERVER_ERROR;
+    const handleForceLogout = async () => {
+        setIsLoggingOut(true);
+        await forceLogout();
+    };
+
+    const bgColor =
+        errorType === ErrorTypes.CONNECTION_ERROR
+            ? "bg-orange-500"
+            : errorType === ErrorTypes.SERVER_ERROR
+            ? "bg-red-500"
+            : "bg-destructive";
 
     return (
         <div className="fixed bottom-0 left-0 right-0 z-50 animate-in slide-in-from-bottom duration-300">
-            <div
-                className={`mx-auto max-w-2xl p-4 ${
-                    isConnectionError
-                        ? "bg-orange-500"
-                        : isServerError
-                          ? "bg-red-500"
-                          : "bg-destructive"
-                }`}
-            >
+            <div className={`mx-auto max-w-3xl p-4 ${bgColor}`}>
                 <div className="flex items-center justify-between gap-4 text-white">
                     <div className="flex items-center gap-3">
                         <WifiOff className="h-5 w-5 shrink-0" />
@@ -140,6 +152,16 @@ function ConnectionErrorBanner() {
                         >
                             <RefreshCw className="mr-1.5 h-3.5 w-3.5" />
                             Retry
+                        </Button>
+                        <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={handleForceLogout}
+                            disabled={isLoggingOut}
+                            className="h-8"
+                        >
+                            <LogOut className="mr-1.5 h-3.5 w-3.5" />
+                            {isLoggingOut ? "..." : "Logout"}
                         </Button>
                         <Button
                             size="sm"
