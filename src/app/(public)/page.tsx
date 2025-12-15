@@ -1,8 +1,8 @@
 // app/page.tsx
 import { getPublicBannersAction } from "@/actions/public/banner";
 import { HeroSection } from "@public/home/hero-section";
-import { PromoCarousel } from "@public/home/promo-carousel";
-import { ServiceHighlights } from "@public/home/service-highlights"; // Import the new component
+import { ServiceHighlights } from "@public/home/service-highlights";
+import { BannerCarousel } from "@public/common/carousel"; // Import the generic component
 
 // Force dynamic rendering (SSR)
 export const dynamic = "force-dynamic";
@@ -19,8 +19,18 @@ export default async function Home() {
             {/* 2. Service Highlights (The floating cards) */}
             <ServiceHighlights />
 
-            {/* 3. Promo Carousel */}
-            {banners.length > 0 && <PromoCarousel banners={banners} />}
+            {/* 3. Promo Carousel (Using Generic Component) */}
+            {banners.length > 0 && (
+                <BannerCarousel 
+                    banners={banners}
+                    title="Promo & Informasi"
+                    description="Layanan dan penawaran terbaru dari kami"
+                    className="py-16"
+                    // Important: Promos need more height than facility banners
+                    // This matches your original promo carousel aspect ratio
+                    ratioClassName="aspect-[4/5] md:aspect-video lg:aspect-[21/9]"
+                />
+            )}
 
             {/* Optional: About / Trust Section */}
             <section className="py-20 bg-white">

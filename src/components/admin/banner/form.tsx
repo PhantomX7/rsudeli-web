@@ -17,7 +17,7 @@ import { useBannerMutations } from "@/hooks/admin/use-banners";
 
 const bannerSchema = z.object({
     name: z.string().min(1, "Banner name is required."),
-    key: z.enum(["home", "service"]),
+    key: z.enum(["home", "facility"]),
     image: z
         .instanceof(File)
         .refine(
@@ -48,7 +48,7 @@ const bannerSchema = z.object({
 
 const BANNER_KEY_OPTIONS = [
     { label: "Home", value: "home" },
-    { label: "Service", value: "service" },
+    { label: "Facility", value: "facility" },
 ];
 
 interface BannerFormProps {

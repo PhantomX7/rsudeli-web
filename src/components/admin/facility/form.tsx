@@ -4,13 +4,14 @@
 import { useForm } from "@tanstack/react-form";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import { FormButton } from "@/components/form/form-button";
 import { FormInput } from "@/components/form/form-input";
-import { FormTextarea } from "@/components/form/form-textarea";
 import { FormImageUpload } from "@/components/form/form-image-upload";
 import { FormCheckbox } from "@/components/form/form-checkbox";
 import { FormNumberInput } from "@/components/form/form-number-input";
+import { BulletPointManager } from "./bullet-point-manager";
 import { Field, FieldGroup } from "@/components/ui/field";
 import { getChangedValues } from "@/lib/form-utils";
 import { Facility } from "@/types/facility";
@@ -19,7 +20,6 @@ import { useFacilityMutations } from "@/hooks/admin/use-facilities";
 const facilitySchema = z.object({
     name: z.string().min(1, "Facility name is required."),
     display_order: z.coerce.number().int("Display order must be an integer."),
-    description: z.string().optional(),
     is_active: z.boolean(),
     icon: z
         .instanceof(File)
@@ -29,7 +29,12 @@ const facilitySchema = z.object({
         )
         .refine(
             (file) =>
-                ["image/jpeg", "image/png", "image/webp", "image/svg+xml"].includes(file.type),
+                [
+                    "image/jpeg",
+                    "image/png",
+                    "image/webp",
+                    "image/svg+xml",
+                ].includes(file.type),
             "Only JPG, PNG, WebP, and SVG formats are supported"
         )
         .nullable(),
@@ -49,11 +54,37 @@ export function FacilityForm({ initialData, facilityId }: FacilityFormProps) {
     const { isPending, error } = mutation;
     const fieldErrors = error?.error?.fields;
 
+    // Parse initial description points from JSON or string
+    const parseInitialPoints = (description?: string): string[] => {
+        if (!description) return [];
+
+        try {
+            const parsed = JSON.parse(description);
+            if (Array.isArray(parsed)) {
+                return parsed;
+            }
+        } catch {
+            // If not valid JSON, treat as single point or split by newlines
+            if (description.includes("\n")) {
+                return description
+                    .split("\n")
+                    .filter((line) => line.trim() !== "");
+            }
+            return description.trim() ? [description] : [];
+        }
+
+        return [];
+    };
+
+    // Track description points separately
+    const [descriptionPoints, setDescriptionPoints] = useState<string[]>(
+        parseInitialPoints(initialData?.description)
+    );
+
     const form = useForm({
         defaultValues: {
             name: initialData?.name || "",
             display_order: initialData?.display_order || 0,
-            description: initialData?.description || "",
             is_active: initialData?.is_active ?? true,
             icon_url: initialData?.icon_url ?? "",
             icon: null as File | null,
@@ -62,10 +93,25 @@ export function FacilityForm({ initialData, facilityId }: FacilityFormProps) {
             onSubmit: facilitySchema as any,
         },
         onSubmit: async ({ value }) => {
+            // Filter out empty points and convert to JSON
+            const filteredPoints = descriptionPoints.filter(
+                (point) => point.trim() !== ""
+            );
+
+            const dataToSubmit = {
+                ...value,
+                description: JSON.stringify(filteredPoints),
+            };
+
             const data = isEdit
-                ? getChangedValues(value, initialData)
-                : value;
-            
+                ? getChangedValues(dataToSubmit, {
+                      ...initialData,
+                      description: JSON.stringify(
+                          parseInitialPoints(initialData?.description)
+                      ),
+                  })
+                : dataToSubmit;
+
             const formData = new FormData();
 
             Object.entries(data).forEach(([key, val]) => {
@@ -124,18 +170,15 @@ export function FacilityForm({ initialData, facilityId }: FacilityFormProps) {
                     )}
                 </form.Field>
 
-                <form.Field name="description">
-                    {(field) => (
-                        <FormTextarea
-                            field={field}
-                            label="Description"
-                            placeholder="Enter facility description"
-                            error={fieldErrors?.description}
-                            disabled={isPending}
-                            rows={4}
-                        />
-                    )}
-                </form.Field>
+                {/* Bullet Point Manager for Description */}
+                <BulletPointManager
+                    value={descriptionPoints}
+                    onChange={setDescriptionPoints}
+                    label="Description Points"
+                    placeholder="Enter a feature or service point"
+                    error={fieldErrors?.description}
+                    disabled={isPending}
+                />
 
                 <form.Field
                     name="icon"
@@ -145,7 +188,7 @@ export function FacilityForm({ initialData, facilityId }: FacilityFormProps) {
                 >
                     {(field) => (
                         <FormImageUpload
-                            className="max-w-[200px]"
+                            className="max-w-[300px]"
                             required={!isEdit}
                             field={field}
                             label="Icon"

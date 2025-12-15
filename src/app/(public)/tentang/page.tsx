@@ -1,3 +1,4 @@
+// app/(public)/about/page.tsx
 import type { Metadata } from "next";
 import {
     Award,
@@ -10,6 +11,7 @@ import {
     Users,
 } from "lucide-react";
 import Image from "next/image";
+import { HeroSection } from "@public/common/hero-section";
 
 export const metadata: Metadata = {
     title: "Tentang Kami",
@@ -21,34 +23,11 @@ export default function AboutPage() {
     return (
         <main className="flex flex-col min-h-screen bg-white">
             {/* 1. Page Header / Hero */}
-            <section className="relative h-[300px] md:h-[400px] flex items-center justify-center overflow-hidden">
-                {/* Background Image with Overlay */}
-                <div
-                    className="absolute inset-0 z-0"
-                    style={{
-                        backgroundImage:
-                            "url('http://res.cloudinary.com/rsudeli/image/upload/o_20/v1531979857/ki9o65ulx0dl3cbuac5n.jpg')",
-                        backgroundPosition: "center",
-                        backgroundSize: "cover",
-                        backgroundRepeat: "no-repeat",
-                    }}
-                >
-                    <div className="absolute inset-0 bg-[#32c69a]/80 mix-blend-multiply" />
-                    <div className="absolute inset-0 bg-black/30" />
-                </div>
-
-                <div className="relative z-10 text-center text-white px-4">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
-                        Tentang Kami
-                    </h1>
-                    <div className="w-20 h-1 bg-white mx-auto rounded-full" />
-                    <p className="mt-4 text-lg text-white/90 max-w-2xl mx-auto">
-                        Melayani dengan hati sejak 1965, RSU Deli terus
-                        berkomitmen meningkatkan kualitas kesehatan masyarakat
-                        Medan.
-                    </p>
-                </div>
-            </section>
+            <HeroSection
+                title="Tentang Kami"
+                description="Melayani dengan hati sejak 1965, RSU Deli terus berkomitmen meningkatkan kualitas kesehatan masyarakat Medan."
+                backgroundImage="http://res.cloudinary.com/rsudeli/image/upload/o_20/v1531979857/ki9o65ulx0dl3cbuac5n.jpg"
+            />
 
             {/* 2. History & Introduction */}
             <section className="py-16 md:py-20">
@@ -63,7 +42,7 @@ export default function AboutPage() {
                                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                             />
 
-                            {/* Floating Badge (Add a subtle glass effect) */}
+                            {/* Floating Badge */}
                             <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm p-6 rounded-xl shadow-lg border-l-4 border-[#32c69a]">
                                 <p className="text-[#32c69a] font-bold text-4xl">
                                     50+
@@ -188,10 +167,6 @@ export default function AboutPage() {
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
-                        {/* 
-               Based on the EJS: Disiplin, Elegan, Luwes, Inovatif, Objektif, Keramahan, Ekonomis 
-               Usually forms "DELI OKE" or similar, though layout here treats them as pillars
-            */}
                         <ValueCard
                             letter="D"
                             title="Disiplin"
@@ -267,7 +242,7 @@ function ValueCard({
 }: {
     title: string;
     letter: string;
-    icon: any;
+    icon: React.ComponentType<{ className?: string }>;
 }) {
     return (
         <div className="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-[#32c69a] transition-all group">
