@@ -62,7 +62,7 @@ export function HeroSection() {
                             size="lg"
                             className="bg-[#32c69a] hover:bg-[#28a580] text-white rounded-full px-8 h-12 text-base font-bold shadow-lg shadow-teal-500/30 transition-all hover:scale-105"
                         >
-                            <Link href="/jadwaldokter">
+                            <Link href="/dokter">
                                 Cari Dokter
                                 <ArrowRight className="ml-2 h-5 w-5" />
                             </Link>

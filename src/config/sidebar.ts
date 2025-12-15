@@ -82,6 +82,17 @@ export const sidebarConfig = {
         ),
 
         createNavItem(
+            "Facility",
+            User,
+            [
+                { title: "List", url: "/admin/facility" },
+                { title: "Create", url: "/admin/facility/create" },
+            ],
+            "#",
+            ROLE_GROUPS.ADMIN_ROOT
+        ),
+
+        createNavItem(
             "Config",
             Cog,
             [{ title: "List", url: "/admin/config" }],
