@@ -104,6 +104,17 @@ export const sidebarConfig = {
         ),
 
         createNavItem(
+            "Insurance",
+            User,
+            [
+                { title: "List", url: "/admin/insurance" },
+                { title: "Create", url: "/admin/insurance/create" },
+            ],
+            "#",
+            ROLE_GROUPS.ADMIN_ROOT
+        ),
+
+        createNavItem(
             "Config",
             Cog,
             [{ title: "List", url: "/admin/config" }],
