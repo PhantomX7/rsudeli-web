@@ -54,7 +54,6 @@ class ApiClient {
                     return null;
                 }
 
-                // Pass scope to save tokens
                 await setAuthTokens(this.scope, newTokens);
                 return newTokens;
             } catch (error) {
@@ -133,8 +132,6 @@ class ApiClient {
             throw error;
         }
     }
-
-    // ... (Keep get, post, put, patch, delete methods as they were) ...
 
     async get<T>(endpoint: string, options?: RequestInit): Promise<T> {
         return this.request<T>(endpoint, { ...options, method: "GET" });

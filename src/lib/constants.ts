@@ -42,6 +42,10 @@ export const ADMIN_API_ENDPOINTS = {
         GENERAL: "/admin/specialist",
         DETAIL: (id: number) => `/admin/specialist/${id}`,
     },
+    ROOM: {
+        GENERAL: "/admin/room",
+        DETAIL: (id: number) => `/admin/room/${id}`,
+    },
     USER: {
         GENERAL: "/admin/user",
         DETAIL: (id: number) => `/admin/user/${id}`,
@@ -77,6 +81,10 @@ export const PUBLIC_API_ENDPOINTS = {
     FACILITY: {
         GENERAL: "/public/facility",
         DETAIL: (id: number) => `/public/facility/${id}`,
+    },
+    ROOM: {
+        GENERAL: "/public/room",
+        DETAIL: (id: number) => `/public/room/${id}`,
     },
     SPECIALIST: {
         GENERAL: "/public/specialist",

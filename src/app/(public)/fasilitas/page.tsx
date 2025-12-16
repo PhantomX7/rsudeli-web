@@ -5,8 +5,8 @@ import { CheckCircle2, Phone, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HeroSection } from "@public/common/hero-section";
 import { getPublicPaginatedFacilitiesAction } from "@/actions/public/facility";
-import { getPublicBannersAction } from "@/actions/public/banner"; // Import this
-import { BannerCarousel } from "@public/common/carousel"; // Import updated component
+import { getPublicBannersAction } from "@/actions/public/banner";
+import { BannerCarousel } from "@public/common/carousel"; 
 
 // Helper to parse description
 function parseDescription(description: string): string[] {

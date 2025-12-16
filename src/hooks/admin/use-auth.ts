@@ -1,7 +1,7 @@
 // hooks/admin/use-auth.ts
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -75,6 +75,13 @@ export function useAdminAuth() {
         window.location.href = "/admin/login";
     }, [queryClient]);
 
+    // Auto-logout when status is unauthenticated or error (optional)
+    useEffect(() => {
+        if (!isLoading && status !== "authenticated" && status !== "loading") {
+            forceLogout();
+        }
+    }, [isLoading, status, forceLogout]);
+
     return {
         user: data?.data ?? null,
         status,
@@ -86,6 +93,8 @@ export function useAdminAuth() {
         forceLogout,
     };
 }
+
+// ... rest of the file remains the same
 
 /**
  * Separated auth mutations hook
