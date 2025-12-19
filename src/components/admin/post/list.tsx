@@ -19,7 +19,7 @@ const FILTER_FIELDS: FilterFieldConfig[] = [
         label: "Type",
         type: "ENUM",
         options: [
-            { label: "Umum", value: "umum" },
+            { label: "Kegiatan", value: "umum" },
             { label: "Akreditasi", value: "akreditasi" },
             { label: "Artikel", value: "artikel" },
         ],

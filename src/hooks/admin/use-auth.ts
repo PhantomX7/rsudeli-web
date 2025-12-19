@@ -76,11 +76,11 @@ export function useAdminAuth() {
     }, [queryClient]);
 
     // Auto-logout when status is unauthenticated or error (optional)
-    useEffect(() => {
-        if (!isLoading && status !== "authenticated" && status !== "loading") {
-            forceLogout();
-        }
-    }, [isLoading, status, forceLogout]);
+    // useEffect(() => {
+    //     if (!isLoading && status !== "authenticated" && status !== "loading") {
+    //         forceLogout();
+    //     }
+    // }, [isLoading, status, forceLogout]);
 
     return {
         user: data?.data ?? null,

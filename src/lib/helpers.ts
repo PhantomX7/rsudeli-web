@@ -232,7 +232,7 @@ const detectErrorType = (error: unknown): ErrorType => {
  * @returns ActionResponse with success: false and typed error
  */
 export const handleApiError = (
-    error: unknown,
+    error: Record<string, unknown> | unknown,
     fallbackMessage: string
 ): ActionResponse<never> => {
     const errorType = detectErrorType(error);
@@ -254,7 +254,7 @@ export const handleApiError = (
         message: friendlyMessages[errorType] || message,
         type: errorType,
         status,
-        details: process.env.NODE_ENV === "development" ? error : undefined,
+        ...(error as Record<string, unknown>),
     };
 
     return {

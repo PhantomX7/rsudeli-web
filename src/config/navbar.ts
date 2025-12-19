@@ -18,7 +18,7 @@ export const NAVIGATION = [
         label: "Kegiatan",
         href: "#",
         children: [
-            { label: "Kegiatan Umum", href: "/kegiatan" },
+            { label: "Kegiatan Umum", href: "/umum" },
             { label: "Akreditasi", href: "/akreditasi" },
         ],
     },

@@ -10,20 +10,25 @@ import { buildBackendUrl } from "@/lib/pagination/serverUtils";
 import { handleApiError, extractApiData } from "@/lib/helpers";
 
 export async function getPublicPostsAction(
+    params?: PaginationParams,
     ...types: string[]
 ): Promise<ActionResponse<Post[]>> {
     try {
         // Construct filter for 'type' (e.g., "in:artikel,berita")
         const typeParam = types.length > 0 ? `in:${types.join(",")}` : "";
 
-        const params: PaginationParams = {
-            sort: "created_at desc", // Show newest posts first
-            is_active: "true",
+        const paramsWithDefaults = {
+            ...params,
+            sort: params?.sort || "created_at desc", // Show newest posts first
+            is_active: params?.is_active || "true",
             type: typeParam,
         };
 
         const response = await publicApiClient().get<ApiResponse<Post[]>>(
-            buildBackendUrl(PUBLIC_API_ENDPOINTS.POST.GENERAL, params),
+            buildBackendUrl(
+                PUBLIC_API_ENDPOINTS.POST.GENERAL,
+                paramsWithDefaults
+            ),
             {
                 next: { tags: ["posts"] },
             }
@@ -46,7 +51,7 @@ export async function getPublicPostBySlugAction(
         );
 
         // Extract the first item
-         return extractApiData(response);
+        return extractApiData(response);
     } catch (error) {
         return handleApiError(error, "Failed to fetch posts");
     }

@@ -29,11 +29,7 @@ const postSchema = z.object({
         )
         .refine(
             (file) =>
-                [
-                    "image/jpeg",
-                    "image/png",
-                    "image/webp",
-                ].includes(file.type),
+                ["image/jpeg", "image/png", "image/webp"].includes(file.type),
             "Only JPG, PNG, and WebP formats are supported"
         )
         .nullable(),
@@ -67,9 +63,7 @@ export function PostForm({ initialData, postId }: PostFormProps) {
             onSubmit: postSchema as any,
         },
         onSubmit: async ({ value }) => {
-            const data = isEdit
-                ? getChangedValues(value, initialData)
-                : value;
+            const data = isEdit ? getChangedValues(value, initialData) : value;
 
             const formData = new FormData();
 
@@ -104,28 +98,26 @@ export function PostForm({ initialData, postId }: PostFormProps) {
             <FieldGroup>
                 <div className="grid gap-6 md:grid-cols-2">
                     {/* TITLE FIELD WITH LISTENERS */}
-                    <form.Field 
+                    <form.Field
                         name="title"
                         listeners={{
-                            onChange: ({ value}) => {
+                            onChange: ({ value }) => {
                                 // Logic: Auto-generate slug if not in Edit mode OR if slug is currently empty
-                                const currentSlug = form.getFieldValue("slug");
-                                
-                                if (!isEdit || !currentSlug) {
-                                    const slug = value
-                                        .toLowerCase()
-                                        .replace(/[^a-z0-9]+/g, "-") // Replace non-alphanumeric with dashes
-                                        .replace(/(^-|-$)+/g, "");   // Remove leading/trailing dashes
-                                    
-                                    form.setFieldValue("slug", slug);
-                                }
-                            }
+                                // const currentSlug = form.getFieldValue("slug");
+
+                                const slug = value
+                                    .toLowerCase()
+                                    .replace(/[^a-z0-9]+/g, "-") // Replace non-alphanumeric with dashes
+                                    .replace(/(^-|-$)+/g, ""); // Remove leading/trailing dashes
+
+                                form.setFieldValue("slug", slug);
+                            },
                         }}
                     >
                         {(field) => (
                             <FormInput
                                 field={field}
-                                label="Title"
+                                label={"Title"+JSON.stringify(fieldErrors)}
                                 placeholder="Enter post title"
                                 required
                                 error={fieldErrors?.title}
@@ -156,7 +148,7 @@ export function PostForm({ initialData, postId }: PostFormProps) {
                             label="Type"
                             placeholder="Select post type"
                             options={[
-                                { label: "Umum", value: "umum" },
+                                { label: "Kegiatan", value: "umum" },
                                 { label: "Akreditasi", value: "akreditasi" },
                                 { label: "Artikel", value: "artikel" },
                             ]}
