@@ -59,7 +59,7 @@ export const ADMIN_API_ENDPOINTS = {
         DETAIL: (id: number) => `/admin/user/${id}`,
     },
     MEDIA: {
-        UPLOAD: "/admin/media/upload",
+        UPLOAD: "/admin/media",
     },
 } as const;
 

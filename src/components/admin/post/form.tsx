@@ -9,7 +9,7 @@ import { FormInput } from "@/components/form/form-input";
 import { FormImageUpload } from "@/components/form/form-image-upload";
 import { FormCheckbox } from "@/components/form/form-checkbox";
 import { FormSelect } from "@/components/form/form-select";
-import { FormTextarea } from "@/components/form/form-textarea";
+import { FormRichText } from "@/components/form/form-rich-text";
 import { Field, FieldGroup } from "@/components/ui/field";
 import { getChangedValues } from "@/lib/form-utils";
 import { Post } from "@/types/post";
@@ -169,7 +169,7 @@ export function PostForm({ initialData, postId }: PostFormProps) {
 
                 <form.Field name="content">
                     {(field) => (
-                        <FormTextarea
+                        <FormRichText
                             field={field}
                             label="Content"
                             placeholder="Write your content here (HTML supported)..."
