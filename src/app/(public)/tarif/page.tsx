@@ -29,8 +29,8 @@ export default async function TarifPage() {
             <HeroSection
                 title="Tarif & Layanan Kamar"
                 description="Informasi transparansi harga kamar rawat inap di RSU Deli Medan. Kenyamanan Anda adalah prioritas kami."
-                badge="Informasi Publik"
-                backgroundImage="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2000&auto=format&fit=crop"
+                badge="RSU DELI MEDAN"
+                backgroundImage="https://res.cloudinary.com/rsudeli/image/upload/c_scale,h_1080,q_auto/v1530936876/Image/LRM_EXPORT_20180629_144159.jpg"
             />
 
             <div className="container mx-auto px-4 -mt-16 relative z-10">

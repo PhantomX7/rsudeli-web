@@ -1,4 +1,15 @@
-import { LayoutDashboard, User, Image, Cog } from "lucide-react";
+import {
+    LayoutDashboard,
+    User,
+    Image,
+    Cog,
+    Stethoscope,
+    Building2,
+    Bed,
+    ShieldCheck,
+    FileText,
+    Award,
+} from "lucide-react";
 
 // Helper constants to ensure consistency
 const ROLES = {
@@ -30,7 +41,6 @@ const createNavItem = (
 export const sidebarConfig = {
     navMain: [
         // CHANGE: Dashboard is now only for Admin & Root
-        // Writers will not see this link
         createNavItem(
             "Dashboard",
             LayoutDashboard,
@@ -61,7 +71,7 @@ export const sidebarConfig = {
 
         createNavItem(
             "Specialist",
-            User,
+            Award, // Changed from User
             [
                 { title: "List", url: "/admin/specialist" },
                 { title: "Create", url: "/admin/specialist/create" },
@@ -72,7 +82,7 @@ export const sidebarConfig = {
 
         createNavItem(
             "Doctor",
-            User,
+            Stethoscope, // Changed from User
             [
                 { title: "List", url: "/admin/doctor" },
                 { title: "Create", url: "/admin/doctor/create" },
@@ -83,7 +93,7 @@ export const sidebarConfig = {
 
         createNavItem(
             "Facility",
-            User,
+            Building2, // Changed from User
             [
                 { title: "List", url: "/admin/facility" },
                 { title: "Create", url: "/admin/facility/create" },
@@ -94,7 +104,7 @@ export const sidebarConfig = {
 
         createNavItem(
             "Room",
-            User,
+            Bed, // Changed from User
             [
                 { title: "List", url: "/admin/room" },
                 { title: "Create", url: "/admin/room/create" },
@@ -105,10 +115,21 @@ export const sidebarConfig = {
 
         createNavItem(
             "Insurance",
-            User,
+            ShieldCheck, // Changed from User
             [
                 { title: "List", url: "/admin/insurance" },
                 { title: "Create", url: "/admin/insurance/create" },
+            ],
+            "#",
+            ROLE_GROUPS.ADMIN_ROOT
+        ),
+
+        createNavItem(
+            "Post",
+            FileText, // Changed from User
+            [
+                { title: "List", url: "/admin/post" },
+                { title: "Create", url: "/admin/post/create" },
             ],
             "#",
             ROLE_GROUPS.ADMIN_ROOT
