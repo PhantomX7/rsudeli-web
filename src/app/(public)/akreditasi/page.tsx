@@ -22,10 +22,10 @@ export default async function ArticlePage({
         <main className="min-h-screen bg-gray-50/50">
             {/* Hero */}
             <HeroSection
-                title="Berita & Artikel"
-                description="Informasi terkini seputar kesehatan, kegiatan rumah sakit, dan artikel medis terpercaya untuk Anda."
-                badge="Wawasan Kesehatan"
-                backgroundImage="https://images.unsplash.com/photo-1504813184591-01572f98c85f?q=80&w=2000&auto=format&fit=crop"
+                title="Akreditasi"
+                description="Informasi terkini seputar akreditasi rumah sakit di RSU Deli"
+                badge="Akreditasi"
+                backgroundImage="https://res.cloudinary.com/rsudeli/image/upload/v1687764242/ysm2sche9obmx8x7yezu.jpg"
             />
 
             <section className="container mx-auto px-4 -mt-10 relative z-20 pb-20">
