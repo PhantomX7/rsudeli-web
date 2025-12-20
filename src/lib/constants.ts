@@ -9,6 +9,11 @@ export const BANNER_KEY = {
     HOME: "home",
 };
 
+export const CONFIG_KEY = {
+    INSTAGRAM: "INSTAGRAM_URL",
+    FACEBOOK: "FACEBOOK_URL",
+}
+
 export const ADMIN_API_ENDPOINTS = {
     AUTH: {
         LOGIN: "/auth/login",

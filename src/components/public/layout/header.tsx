@@ -10,19 +10,31 @@ import { SiInstagram, SiFacebook } from "@icons-pack/react-simple-icons";
 
 import { NAVIGATION } from "@/config/navbar";
 
-export default function Header() {
+interface HeaderProps {
+    socialUrls: {
+        instagram: string;
+        facebook: string;
+    };
+}
+
+export default function Header({ socialUrls }: HeaderProps) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [openMobileSubmenu, setOpenMobileSubmenu] = useState<string | null>(
         null
     );
+
+    // Fallback URLs if config is empty
+    const instagramLink =
+        socialUrls.instagram || "https://www.instagram.com/rsudeli/";
+    const facebookLink =
+        socialUrls.facebook || "https://www.facebook.com/rsu.deli.9";
 
     const toggleMobileSubmenu = (label: string) => {
         setOpenMobileSubmenu(openMobileSubmenu === label ? null : label);
     };
 
     return (
-        // Added sticky to the whole header so the phone number stays visible on scroll (optional)
-        <header className="w-full sticky lg:relative z-50 bg-white shadow-sm  top-0">
+        <header className="w-full sticky lg:relative z-50 bg-white shadow-sm top-0">
             {/* --- Top Bar (Logo & Burger) --- */}
             <div className="container mx-auto px-4 py-3 md:py-4">
                 <div className="flex items-center justify-between">
@@ -41,18 +53,20 @@ export default function Header() {
                     <div className="hidden lg:flex items-center gap-6">
                         <div className="flex items-center gap-3 text-gray-600">
                             <a
-                                href="https://www.instagram.com/rsudeli/"
+                                href={instagramLink}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="hover:text-[#32c69a] transition-colors"
+                                aria-label="Instagram"
                             >
                                 <SiInstagram className="h-5 w-5" />
                             </a>
                             <a
-                                href="https://www.facebook.com/rsu.deli.9"
+                                href={facebookLink}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="hover:text-[#32c69a] transition-colors"
+                                aria-label="Facebook"
                             >
                                 <SiFacebook className="h-5 w-5" />
                             </a>
@@ -77,8 +91,7 @@ export default function Header() {
                 </div>
             </div>
 
-            {/* --- NEW: Mobile Hotline Bar --- */}
-            {/* Visible only on lg and below. Clickable for quick calling. */}
+            {/* --- Mobile Hotline Bar --- */}
             <div className="lg:hidden bg-[#32c69a] text-white border-t border-white/20">
                 <a
                     href="tel:+62614565229"
@@ -253,13 +266,17 @@ export default function Header() {
                     <div className="p-6 bg-black/10">
                         <div className="flex justify-center space-x-6">
                             <a
-                                href="https://www.instagram.com/rsudeli/"
+                                href={instagramLink}
+                                target="_blank"
+                                rel="noreferrer"
                                 className="text-white hover:text-gray-200"
                             >
                                 <SiInstagram className="h-6 w-6" />
                             </a>
                             <a
-                                href="https://www.facebook.com/rsu.deli.9"
+                                href={facebookLink}
+                                target="_blank"
+                                rel="noreferrer"
                                 className="text-white hover:text-gray-200"
                             >
                                 <SiFacebook className="h-6 w-6" />

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-// Using Open Sans for body text (readable) and Montserrat for headings (modern/medical)
-import Header from "@public/layout/header"; // Adjust path to where you saved the Header
+import { getPublicConfigByKeyAction } from "@/actions/public/config"; // Import action
+import Header from "@public/layout/header";
 import { Footer } from "@public/layout/footer";
+import { CONFIG_KEY } from "@/lib/constants";
 
 // --- Metadata Configuration ---
 const SITE_NAME = "RSU Deli";
@@ -31,7 +32,6 @@ export const metadata: Metadata = {
         siteName: SITE_NAME,
         title: SITE_NAME,
         description: SITE_DESCRIPTION,
-        // images: ["/images/og-image.jpg"], // Add an Open Graph image later
     },
     robots: {
         index: true,
@@ -39,18 +39,29 @@ export const metadata: Metadata = {
     },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+
+    const [instagram, facebook] = await Promise.all([
+        getPublicConfigByKeyAction(CONFIG_KEY.INSTAGRAM),
+        getPublicConfigByKeyAction(CONFIG_KEY.FACEBOOK),
+    ]);
+    
+    const socialUrls = {
+        instagram: instagram?.data?.value || "",
+        facebook: facebook?.data?.value || "",
+    };
+    console.log(instagram);
+
     return (
         <div className="font-sans antialiased bg-white text-gray-900 flex flex-col min-h-screen">
-            {/* Navigation */}
-            <Header />
+            {/* Navigation with Dynamic Links */}
+            <Header socialUrls={socialUrls} />
 
             {/* Main Content */}
-            {/* flex-grow ensures footer stays at bottom even with little content */}
             <main className="grow">{children}</main>
 
             {/* Footer */}
