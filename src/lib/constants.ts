@@ -87,6 +87,9 @@ export const PUBLIC_API_ENDPOINTS = {
         GENERAL: "/public/config",
         FIND_BY_KEY: (key: string) => `/public/config/key/${key}`,
     },
+    CONTACT: {
+        GENERAL: "/public/contact",
+    },
     DOCTOR: {
         GENERAL: "/public/doctor",
         DETAIL: (id: number) => `/public/doctor/${id}`,

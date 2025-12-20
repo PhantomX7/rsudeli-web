@@ -54,7 +54,6 @@ export default async function RootLayout({
         instagram: instagram?.data?.value || "",
         facebook: facebook?.data?.value || "",
     };
-    console.log(instagram);
 
     return (
         <div className="font-sans antialiased bg-white text-gray-900 flex flex-col min-h-screen">

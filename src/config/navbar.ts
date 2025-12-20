@@ -23,5 +23,5 @@ export const NAVIGATION = [
         ],
     },
     { label: "Artikel", href: "/artikel" },
-    { label: "Hubungi kami", href: "/hubungi" },
+    { label: "Hubungi kami", href: "#contact" },
 ];
