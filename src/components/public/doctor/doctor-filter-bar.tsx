@@ -133,7 +133,7 @@ export function DoctorFilterBar({
                             })
                         }
                     >
-                        <SelectTrigger className="h-12 w-full border-gray-200 bg-gray-50/50 pl-11 text-sm text-gray-600 hover:bg-white hover:border-gray-300 focus:border-[#32c69a] focus:ring-4 focus:ring-[#32c69a]/10">
+                        <SelectTrigger className="relative h-12 w-full border-gray-200 bg-gray-50/50 pl-11 text-sm text-gray-600 hover:bg-white hover:border-gray-300 focus:border-[#32c69a] focus:ring-4 focus:ring-[#32c69a]/10">
                             {/* Absolute Icon inside Trigger for perfect alignment */}
                             <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
                                 <Filter className="h-5 w-5" />
@@ -169,7 +169,7 @@ export function DoctorFilterBar({
                             navigateWithParams({ type: val, page: "1" })
                         }
                     >
-                        <SelectTrigger className="h-12 w-full border-gray-200 bg-gray-50/50 pl-11 text-sm text-gray-600 hover:bg-white hover:border-gray-300 focus:border-[#32c69a] focus:ring-4 focus:ring-[#32c69a]/10">
+                        <SelectTrigger className="relative h-12 w-full border-gray-200 bg-gray-50/50 pl-11 text-sm text-gray-600 hover:bg-white hover:border-gray-300 focus:border-[#32c69a] focus:ring-4 focus:ring-[#32c69a]/10">
                             <div className="absolute left-3.5 top-1/2 -translate-y-1/2">
                                 {searchParams.get("type") === "specialist" ? (
                                     <Stethoscope className="h-5 w-5 text-[#32c69a]" />
