@@ -12,25 +12,25 @@ const SERVICES = [
         icon: Ambulance,
         title: "IGD 24 Jam",
         desc: "Layanan gawat darurat dengan armada ambulans modern dan tim medis reaksi cepat.",
-        link: "/fasilitas/igd",
+        link: "/fasilitas",
     },
     {
         icon: Stethoscope,
         title: "Dokter Spesialis",
         desc: "Konsultasi dengan dokter spesialis berpengalaman dari berbagai bidang medis.",
-        link: "/jadwaldokter",
+        link: "/dokter",
     },
     {
         icon: Microscope,
         title: "Laboratorium",
         desc: "Pemeriksaan diagnostik lengkap dengan peralatan teknologi terkini yang akurat.",
-        link: "/fasilitas/lab",
+        link: "/fasilitas",
     },
     {
         icon: HeartPulse,
         title: "Medical Check Up",
         desc: "Paket pemeriksaan kesehatan menyeluruh untuk deteksi dini dan pencegahan.",
-        link: "/fasilitas/mcu",
+        link: "/fasilitas",
     },
 ];
 
